@@ -1,0 +1,53 @@
+#!/bin/bash
+
+export DOCKER_REPO_USER=phuysmans
+
+docker_cleanup() {
+	local containers
+	containers=( $(docker ps -aq 2>/dev/null) )
+	docker rm "${containers[@]}" 2>/dev/null
+	local volumes
+	volumes=( $(docker ps --filter status=exited -q 2>/dev/null) )
+	docker rm -v "${volumes[@]}" 2>/dev/null
+	local images
+	images=( $(docker images --filter dangling=true -q 2>/dev/null) )
+	docker rmi "${images[@]}" 2>/dev/null
+}
+
+docker_delete_stopped() {
+echo "delete"
+}
+
+#### docker containers
+
+ansible() {
+	docker run -it --rm \
+		-v "$(pwd)/.ansible/hosts:/etc/ansible/hosts" \
+		-v "$(pwd)/.ansible/ansible.cfg:/etc/ansible/ansible.cfg" \
+		-v "${HOME}/.ssh:/root/.ssh:ro" \
+		--name ansible \
+		${DOCKER_REPO_USER}/ansible "$@"
+}
+
+
+php() {
+	docker run -it --rm \
+		-v "$(pwd):/var/src" \
+		--workdir /var/src \
+		--name php-5.4 \
+		pythagoria/php-cli:5.4 "$@"
+}
+
+chrome() {
+	(
+		cd ${HOME}/dockerfiles
+		make chrome
+	)
+}
+
+shellcheck() {
+	(
+		cd ${HOME}/dockerfiles
+		make shellcheck
+	)
+}

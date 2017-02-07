@@ -1,0 +1,63 @@
+#!/usr/bash
+
+# set -e
+
+
+# create a tarball
+targz() {
+	local tmpfile="${@%/}.tar"
+	tar -cvf "${tmpfile}" --exclude=".DS_Store" --exclude=".*.swp" "${@}" || return 1
+
+	size=$(
+		#stat -f"%z" "${tmpfile}" 2> /dev/null;
+		stat -f"%s" "${tmpfile}" 2> /dev/null
+	);
+
+	local cmd=""
+	if (( size < 52428800 )) && false; then
+		echo "ingoreing"
+	else
+		if hash pigz 2> /dev/null; then
+			cmd="pigz"
+		else
+			cmd="gzip"
+		fi
+	fi
+
+	"${cmd}" -v "${tmpfile}" || return 1
+
+	[ -f "${tmpfile}" ] && rm "${tmpfile}"
+
+}
+
+# disk usage
+fs() {
+
+	if [[ -n "$@" ]]; then
+		du -sbh -- "$@"
+	else
+		du -sbh .[^.]* ./*
+	fi
+}
+
+
+
+
+
+
+
+
+
+
+# clear tor download crap
+clear_tor_downloads() {
+    rm -fr ~/TorDownloads/*
+    rm -f ~/.local/share/recently-used.xbel
+}
+
+# scan local network, f.e. detect printers
+scan_local_network() {
+	sudo nmap -v -sn "192.168.0.0/24"
+}
+
+

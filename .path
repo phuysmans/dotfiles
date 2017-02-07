@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# go
+export GOPATH="${HOME}/.go"
+
+# add to path ...
+
+
+
+# export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl

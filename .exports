@@ -1,0 +1,23 @@
+#!/usr/bash
+
+# default editor
+#export EDITOR='vim';
+
+# python io utf8
+#export PYTHONIOENCODING='UTF-8';
+
+# bash history size
+#export HISTSIZE='32768';
+#export HISTFILESIZE="${HISTSIZE}"
+# ommit duplicates and commands beginning with space from history
+#export HISTCONTROL='ignoreboth';
+
+# language
+#export LANG='en_US.UTF-8';
+#export LC_ALL='en_US.UTF-8';
+
+# highlight section titles in manual pages
+#export LESS_TERMCAP_md="${yellow}";
+
+# dont clear screen after quitting manual page
+#export MANPAGER='less -X';
